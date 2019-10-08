@@ -1,28 +1,38 @@
 var socket = io()
 
-/* 접속 되었을 때 실행 */
 socket.on('connect', function() {
-  /* 이름을 입력받고 */
-  var name = prompt('반갑습니다!', '')
+  var name = prompt('반갑습니다!', '사용자 닉네임')
 
-  /* 이름이 빈칸인 경우 */
   if(!name) {
     name = '익명'
   }
 
-  /* 서버에 새로운 유저가 왔다고 알림 */
+  socket.emit('add_array',name)//접속자 추가
   socket.emit('newUser', name)
 })
 
-/* 서버로부터 데이터 받은 경우 */
+//접속자 목록 출력
+socket.on('update_array',function(array){
+    
+    del_array()
+
+    array.forEach(function(element){
+        var chatuser=document.getElementById('list')
+        var user=document.createElement('li')
+        var node=document.createTextNode(element)
+        
+        user.appendChild(node)
+        chatuser.appendChild(user)
+    })
+
+})
+
 socket.on('update', function(data) {
   var chat = document.getElementById('chat')
-
   var message = document.createElement('div')
-  var node = document.createTextNode(`${data.name}: ${data.message}`)
+  var node = document.createTextNode(`${data.name} : ${data.message}`)
   var className = ''
 
-  // 타입에 따라 적용할 클래스를 다르게 지정
   switch(data.type) {
     case 'message':
       className = 'other'
@@ -42,22 +52,31 @@ socket.on('update', function(data) {
   chat.appendChild(message)
 })
 
-/* 메시지 전송 함수 */
 function send() {
-  // 입력되어있는 데이터 가져오기
   var message = document.getElementById('test').value
   
-  // 가져왔으니 데이터 빈칸으로 변경
   document.getElementById('test').value = ''
 
-  // 내가 전송할 메시지 클라이언트에게 표시
   var chat = document.getElementById('chat')
   var msg = document.createElement('div')
   var node = document.createTextNode(message)
+  
   msg.classList.add('me')
   msg.appendChild(node)
   chat.appendChild(msg)
 
-  // 서버로 message 이벤트 전달 + 데이터와 함께
+  var test = document.createElement('br')
+  chat.appendChild(test)  
+
   socket.emit('message', {type: 'message', message: message})
+}
+
+function del_array(){
+    var test=document.getElementById('UserList')
+    var test2=document.getElementById('list')
+    test.removeChild(test2)
+
+    var tag=document.createElement('ul')
+    tag.id='list'
+    test.appendChild(tag)
 }
