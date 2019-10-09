@@ -1,14 +1,13 @@
 var socket = io()
 
 socket.on('connect', function() {
-  var name = prompt('반갑습니다!', '사용자 닉네임')
+  var name = prompt('사용할 닉네임을 입력하시오.', '사용자 닉네임')
 
   if(!name) {
     name = '익명'
   }
-
-  socket.emit('add_array',name)//접속자 추가
   socket.emit('newUser', name)
+  socket.emit('add_array')//접속자 추가
 })
 
 //접속자 목록 출력
@@ -53,9 +52,9 @@ socket.on('update', function(data) {
 })
 
 function send() {
-  var message = document.getElementById('test').value
+  var message = document.getElementById('send_message').value
   
-  document.getElementById('test').value = ''
+  document.getElementById('send_message').value = ''
 
   var chat = document.getElementById('chat')
   var msg = document.createElement('div')
@@ -65,18 +64,16 @@ function send() {
   msg.appendChild(node)
   chat.appendChild(msg)
 
-  var test = document.createElement('br')
-  chat.appendChild(test)  
-
   socket.emit('message', {type: 'message', message: message})
 }
 
+//기존 접속자 목록 지우는 함수
 function del_array(){
-    var test=document.getElementById('UserList')
-    var test2=document.getElementById('list')
-    test.removeChild(test2)
+    var parent_node=document.getElementById('UserList')
+    var child_node=document.getElementById('list')
+    parent_node.removeChild(child_node)
 
     var tag=document.createElement('ul')
     tag.id='list'
-    test.appendChild(tag)
+    parent_node.appendChild(tag)
 }

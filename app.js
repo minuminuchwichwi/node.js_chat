@@ -22,8 +22,6 @@ app.get('/',function(request, response){
             response.end()
         }
     })
-
-    console.log('유저가 / 으로 접속하였습니다')
 })
 
 io.sockets.on('connection',function(socket){
@@ -46,6 +44,7 @@ io.sockets.on('connection',function(socket){
     socket.on('disconnect',function(){
         console.log(socket.name+'님이 나가셨습니다')
 
+        //접속자 제거
         var index=array.indexOf(socket.name)
         array.splice(index,1)
 
@@ -54,11 +53,10 @@ io.sockets.on('connection',function(socket){
     })
 
     //접속자 추가
-    socket.on('add_array',function(username){
-        array.push(username)
+    socket.on('add_array',function(){
+        array.push(socket.name)
         io.sockets.emit('update_array',array)
     })
-
 })
 
 server.listen(3000,function(){
