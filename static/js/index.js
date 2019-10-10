@@ -77,3 +77,9 @@ function del_array(){
     tag.id='list'
     parent_node.appendChild(tag)
 }
+
+function check_enter(){
+  if(window.event.keyCode==13){
+    send();
+  }
+}

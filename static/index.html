@@ -24,7 +24,7 @@
         <!-- 채팅 메시지 영역 -->
       </div>
       <div>
-        <input type="text" id="send_message" placeholder="메시지를 입력해주세요.">
+        <input type="text" id="send_message" placeholder="메시지를 입력해주세요." onkeyup="check_enter()">
         <button onclick="send()">전송</button>
       </div>
     </div>
@@ -34,11 +34,8 @@
       </h1>
       <div id="UserList">
         <ul id=list>
-
         </ul>
       </div>
     </div>
   </body>
 </html>
-
-
