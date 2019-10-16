@@ -65,6 +65,8 @@ function send() {
   chat.appendChild(msg)
 
   socket.emit('message', {type: 'message', message: message})
+
+  chat.scrollTop=chat.scrollHeight
 }
 
 //기존 접속자 목록 지우는 함수
