@@ -7,7 +7,7 @@ var io= socket(server)
 var fs =require('fs')
 var array=new Array()
 var oracledb = require("oracledb")
-var dbConfig = require("./database/dbconfig.js")
+var dbConfig = require("./dbconfig.js")
 oracledb.autoCommit = true
 
 app.use('/css',express.static('./static/css'))
@@ -44,7 +44,16 @@ oracledb.getConnection({
             socket.name=name
     
             io.sockets.emit('update',{type:'connect',name:'SERVER',message:name+'님이 접속하였습니다'})
-        
+
+            var query = 'INSERT INTO CHATTING_DATA(NAME, TIME, LINK) VALUES (\'' + socket.name + '\', TO_CHAR(SYSDATE, \'YYYY/MM/DD HH24:MI:SS\'), \'CONNECT\')'
+
+            connection.execute(query, function(err,result){
+                if(err){
+                    console.log("insert 실패",err)
+                    return
+                }
+                console.log('Rows Insert: '+ result.rowsAffected)
+            })
         })
     
         socket.on('message',function(data){
@@ -73,6 +82,16 @@ oracledb.getConnection({
     
             socket.broadcast.emit('update_array',array)
             socket.broadcast.emit('update',{type:'disconnect',name:'SERVER',message:socket.name+'님이 나가셨습니다.'})
+
+            var query = 'INSERT INTO CHATTING_DATA(NAME, TIME, LINK) VALUES (\'' + socket.name + '\', TO_CHAR(SYSDATE, \'YYYY/MM/DD HH24:MI:SS\'), \'DISCONNECT\')'
+
+            connection.execute(query, function(err,result){
+                if(err){
+                    console.log("insert 실패",err)
+                    return
+                }
+                console.log('Rows Insert: '+ result.rowsAffected)
+            })
         })
     
         //접속자 추가
