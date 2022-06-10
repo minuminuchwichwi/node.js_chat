@@ -3,7 +3,7 @@
   margin: 30px;
   margin-top: 50px;
   border-radius: 20px;
-  background-color: lightblue;
+  background-color: rgb(255, 148, 185);
   text-align: center;
   width: 500px;
   height: 800px;
@@ -15,7 +15,7 @@
   margin: auto;
   margin-top: 100px;
   border-radius: 20px;
-  background-color: rgb(180, 224, 21);
+  background-color: rgb(194, 148, 255);
   text-align: center;
   width: 300px;
   height: 500px;
@@ -35,7 +35,7 @@
   width: 90%;
   margin:auto;
   margin-top: 10px;
-  background-color: aquamarine;
+  background-color: rgb(238, 168, 255);
   text-align: center;
   padding:5px;
   float:left;
